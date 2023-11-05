@@ -45,6 +45,6 @@ public class DeliveryInfo {
     private DeliveryStatus deliveryStatus;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "deliveryInfo")
+    @JoinColumn(name = "COURIER_ID")
     private Courier courier;
 }

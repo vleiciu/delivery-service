@@ -8,21 +8,20 @@ import com.org.ma.enums.MessageType;
 import com.org.ma.enums.Subject;
 import com.org.ma.model.Delivery;
 import lombok.AllArgsConstructor;
-import org.apache.kafka.clients.producer.KafkaProducer;
 import org.apache.kafka.clients.producer.ProducerRecord;
+import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.stereotype.Service;
 
 import java.util.Optional;
 
 import static com.org.ma.enums.Header.RESPONSE;
 import static com.org.ma.utils.Constants.*;
-import static com.org.ma.utils.Constants.MESSAGE_TYPE;
 
 @Service
 @AllArgsConstructor
 public class DeliveryService {
 
-    private KafkaProducer<String, Delivery> producer;
+    private KafkaTemplate<String, String> producer;
 
     private DeliveryRepository repository;
 
@@ -47,7 +46,7 @@ public class DeliveryService {
                 .courierId(deliveryInfo.getCourier().getCourierId())
                 .build();
 
-        ProducerRecord<String, Delivery> record = new ProducerRecord<>(ORDER_CHANNEL, MESSAGE, delivery);
+        ProducerRecord<String, String> record = new ProducerRecord<>(ORDER_CHANNEL, delivery.toString());
         record.headers().add(SUBJECT, "%s_%s".formatted(Subject.DELIVERY.name(), RESPONSE.name()).getBytes());
         record.headers().add(MESSAGE_TYPE, MessageType.REGULAR.name().getBytes());
         producer.send(record);
