@@ -14,7 +14,7 @@ public class MessageRoute extends RouteBuilder {
 
     @Override
     public void configure() {
-        from("kafka:%s?brokers=localhost:9092".formatted(DELIVERY_CHANNEL))
+        from("kafka:%s?brokers=172.18.0.1:9092".formatted(DELIVERY_CHANNEL))
                 .process(handler);
     }
 }
